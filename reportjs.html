@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>PrimeVue + CDN</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+
+    <link rel="stylesheet" href="./resources/primevue/cdn.jsdelivr.net_npm_primeicons@7.0.0_primeicons.min.css">
+    <script src="./resources/primevue/cdn.jsdelivr.net_npm_vue@3.5.6_dist_vue.global.min.js"></script>
+    <script src="./resources/primevue/cdn.jsdelivr.net_npm_primevue@4.0.7_umd_primevue.min.js"></script>
+    <script src="./resources/primevue/cdn.jsdelivr.net_npm_@primevue_themes@4.0.7_umd_aura.min.js"></script> <!-- aura, lara oder nora -->
+    <script src="./resources/unpkg.com_jspdf@2.5.2dist_jspdf.umd.js"></script>
+    <script src="./resources/unpkg.com_jspdf-autotable@3.8.4_dist_jspdf.plugin.autotable.js"></script>    
+    <script src="./resources/cdn.sheetjs.com_xlsx-0.20.3_package_dist_xlsx.full.min.js"></script>
+    <script src="./resources/unpkg.com_file-saver@2.0.5_dist_FileSaver.min.js"></script>    
+    <style>
+      html {
+        font-size: 14px;
+        font-family: 'Inter var', -apple-system, BlinkMacSystemFont, 'Segoe UI',
+          Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji',
+          'Segoe UI Emoji', 'Segoe UI Symbol';
+        font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11';
+      }
+    </style>
+  </head>
+  <body>
+    <div id="app">
+      <div class="card flex justify-center" style="height: 800px;">
+        <p-datatable id="report_datatable" :value="report_datarows" ref="dt" :export-filename="exportFilenameCsv" scrollable scroll-height="flex" table-style="min-width: 50rem">
+          <template #header>
+            <div class="text-end pb-4">
+              <p-select v-model="selectedReport" :options="reports" option-label="id" @change="selectedReport_changed" placeholder="Select a report" class="w-full md:w-56"></p-select>
+              <p-button icon="pi pi-refresh"    rounded @click="loadReports($event)" v-tooltip.bottom="{ value: 'Refresh list of reports', autoHide: false }"></p-button>
+              <p-button icon="pi pi-file"       rounded @click="exportCSV($event)"   :disabled="!selectedReport" v-tooltip.bottom="{ value: 'Export as CSV', autoHide: false }"></p-button>
+              <p-button icon="pi pi-file-excel" rounded @click="exportExcel($event)" :disabled="!selectedReport" v-tooltip.bottom="{ value: 'Export as XLSX', autoHide: false }"></p-button>
+              <p-button icon="pi pi-file-pdf"   rounded @click="exportPDF($event)"   :disabled="!selectedReport" v-tooltip.bottom="{ value: 'Export as PDF', autoHide: false }"></p-button>
+            </div>
+          </template>
+          <p-column field="code" header="Code" export-header="Product Code"></p-column>
+          <p-column field="name" header="Name"></p-column>
+          <p-column field="category" header="Category"></p-column>
+          <p-column field="quantity" header="Quantity"></p-column>
+        </p-datatable>
+      </div>
+    </div>
+
+    <script type="text/javascript" src="./resources/reportjs_20250126_1656.js"></script>
+
+  </body>
+</html>
